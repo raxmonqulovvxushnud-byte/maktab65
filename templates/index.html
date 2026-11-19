@@ -1,0 +1,188 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="65-maktab rasmiy veb-sayti">
+    <title>{% if school %}{{ school.title }}{% else %}65-Maktab{% endif %} | Rasmiy portal</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<header class="header">
+    <a href="/" class="logo">
+        <span class="logo-icon">65</span>
+        <span>MAKTAB</span>
+    </a>
+
+    <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menyuni ochish">
+        ☰
+    </button>
+
+    <nav id="nav">
+        <a href="/">Bosh sahifa</a>
+        <a href="#about">Biz haqimizda</a>
+        <a href="#news">Yangiliklar</a>
+        <a href="#students">O'quvchilar</a>
+        <a href="#gallery">Galereya</a>
+    </nav>
+</header>
+
+<main>
+
+    <!-- BOSH SAHIFA -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="tag">65-MAKTAB RASMIY PORTALI</span>
+
+            <h1>Kelajak sari<br>bilim bilan!</h1>
+
+            <p>
+                {% if school and school.description %}
+                    {{ school.description }}
+                {% else %}
+                    Bilim, tarbiya va yuksak marralar sari birgalikda!
+                {% endif %}
+            </p>
+
+            <a href="#about" class="primary-btn">
+                Biz haqimizda →
+            </a>
+        </div>
+
+        <div class="hero-image">
+            {% if school and school.image %}
+                <img src="{{ school.image.url }}" alt="65-maktab">
+            {% else %}
+                <img src="{% static 'images/school.jpg' %}" alt="65-maktab">
+            {% endif %}
+
+            <div class="image-label">
+                <span>65-MAKTAB</span>
+                <p>Bilim va tarbiya maskani</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- BIZ HAQIMIZDA -->
+    <section class="section" id="about">
+        <div class="section-heading">
+            <span>BIZ HAQIMIZDA</span>
+            <h2>65-Maktab hayoti</h2>
+            <p>Bilimli avlod — buyuk kelajak poydevori.</p>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <span>📚</span>
+                <h3>Ta'lim</h3>
+                <p>Sifatli bilim va zamonaviy ta'lim muhiti.</p>
+            </div>
+
+            <div class="info-card">
+                <span>🏆</span>
+                <h3>Yutuqlar</h3>
+                <p>O'quvchilarimizning bilim va sportdagi muvaffaqiyatlari.</p>
+            </div>
+
+            <div class="info-card">
+                <span>💡</span>
+                <h3>Ijod va innovatsiya</h3>
+                <p>Yangi g'oyalar, texnologiyalar va ijodiy tashabbuslar.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- YANGILIKLAR -->
+    <section class="section news-section" id="news">
+        <div class="section-heading">
+            <span>SO'NGGI XABARLAR</span>
+            <h2>Maktab yangiliklari</h2>
+            <p>Maktabimiz hayotidagi muhim voqealar.</p>
+        </div>
+
+        <div class="info-grid">
+            {% for item in news %}
+                <div class="info-card">
+                    {% if item.image %}
+                        <img src="{{ item.image.url }}"
+                             alt="{{ item.title }}"
+                             style="width:100%;height:200px;object-fit:cover;border-radius:14px;">
+                    {% endif %}
+
+                    <h3>{{ item.title }}</h3>
+                    <p>{{ item.description|truncatewords:25 }}</p>
+                    <small>{{ item.created_at|date:"d.m.Y" }}</small>
+                </div>
+            {% empty %}
+                <div class="empty-card">
+                    <span>📰</span>
+                    <h3>Hozircha yangiliklar yo'q</h3>
+                    <p>Tez orada yangi xabarlar joylashtiriladi.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- O'QUVCHILAR -->
+    <section class="student-section" id="students">
+        <div>
+            <span class="tag">BIZNING KELAJAGIMIZ</span>
+            <h2>Har bir o'quvchi — katta imkoniyat!</h2>
+            <p>
+                Bizning maqsadimiz — bilimli, ijodkor,
+                tashabbuskor va zamonaviy fikrlaydigan yoshlarni tarbiyalash.
+            </p>
+            <a href="#gallery" class="primary-btn">
+                Maktab hayoti →
+            </a>
+        </div>
+
+        <div class="student-icon">🎓</div>
+    </section>
+
+    <!-- FOTOGALEREYA -->
+    <section class="section" id="gallery">
+        <div class="section-heading">
+            <span>ESDA QOLARLI LAHZALAR</span>
+            <h2>Fotogalereya</h2>
+            <p>Maktabimiz hayotidan lavhalar.</p>
+        </div>
+
+        <div class="info-grid">
+            {% for photo in gallery %}
+                <div class="info-card">
+                    <img src="{{ photo.image.url }}"
+                         alt="{{ photo.title }}"
+                         style="width:100%;height:220px;object-fit:cover;border-radius:14px;">
+
+                    <h3>{{ photo.title }}</h3>
+                </div>
+            {% empty %}
+                <div class="empty-card">
+                    <span>📸</span>
+                    <h3>Hozircha suratlar yo'q</h3>
+                    <p>Tez orada fotogalereya yangilanadi.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+</main>
+
+<footer class="footer">
+    <h2>65-MAKTAB</h2>
+    <p>Kelajak shu yerdan boshlanadi!</p>
+    <p>© 2026 65-Maktab. Barcha huquqlar himoyalangan.</p>
+</footer>
+
+<script>
+function toggleMenu() {
+    document.getElementById('nav').classList.toggle('active');
+}
+</script>
+
+</body>
+</html>
