@@ -1,4 +1,6 @@
+
 from django.db import models
+from django.conf import settings
 
 
 class SchoolInfo(models.Model):
@@ -37,3 +39,47 @@ class Gallery(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class UserProfile(models.Model):
+
+    class Role(models.TextChoices):
+        STUDENT = "student", "O'quvchi"
+        TEACHER = "teacher", "O'qituvchi"
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="profile"
+    )
+
+    role = models.CharField(
+        max_length=10,
+        choices=Role.choices
+    )
+
+    grade = models.CharField(
+        max_length=10,
+        blank=True,
+        verbose_name="Sinf"
+    )
+
+    subject = models.CharField(
+        max_length=100,
+        blank=True,
+        verbose_name="Fan"
+    )
+
+    is_approved = models.BooleanField(
+        default=False,
+        verbose_name="Tasdiqlangan"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Foydalanuvchi profili"
+        verbose_name_plural = "Foydalanuvchilar"
+
+    def __str__(self):
+        return f"{self.user.username} - {self.get_role_display()}"

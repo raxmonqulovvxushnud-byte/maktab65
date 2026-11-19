@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Shaxsiy kabinet | 65-Maktab</title>
+    <style>
+        body {
+            margin: 0; background: #eef2ff;
+            font-family: Arial, sans-serif; padding: 25px;
+        }
+        .card {
+            max-width: 600px; margin: 50px auto;
+            background: white; padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 10px 35px #0001;
+        }
+        h2 { color: #253b80; }
+        a {
+            display: inline-block; padding: 12px 20px;
+            background: #3158c9; color: white;
+            text-decoration: none; border-radius: 9px;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h2>65-Maktab shaxsiy kabineti</h2>
+
+    <h3>Xush kelibsiz, {{ request.user.username }}!</h3>
+
+    <p>Foydalanuvchi turi: {{ profile.get_role_display }}</p>
+
+    {% if profile.role == "student" %}
+        <p>Sinf: {{ profile.grade }}</p>
+    {% else %}
+        <p>Fan: {{ profile.subject }}</p>
+    {% endif %}
+
+    {% if profile.role == "teacher" and not profile.is_approved %}
+        <p>Akkauntingiz administrator tasdig‘ini kutmoqda.</p>
+    {% endif %}
+
+    <a href="{% url 'home' %}">Bosh sahifa</a>
+    <a href="{% url 'logout' %}">Chiqish</a>
+</div>
+</body>
+</html>

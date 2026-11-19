@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ro‘yxatdan o‘tish | 65-Maktab</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh; display: grid;
+            place-items: center; background: #eef2ff;
+            font-family: Arial, sans-serif; padding: 20px;
+        }
+        .card {
+            background: white; width: 100%; max-width: 440px;
+            padding: 32px; border-radius: 18px;
+            box-shadow: 0 10px 35px #0001;
+        }
+        h2 { color: #253b80; text-align: center; }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        input, select {
+            width: 100%; padding: 12px; margin-top: 7px;
+            border: 1px solid #ccd3e0; border-radius: 9px;
+        }
+        button {
+            width: 100%; margin-top: 22px; padding: 14px;
+            background: #3158c9; color: white; border: 0;
+            border-radius: 9px; font-weight: bold; cursor: pointer;
+        }
+        a { color: #3158c9; text-decoration: none; }
+        .error { color: #c62828; font-size: 14px; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h2>65-Maktab</h2>
+    <h3>Ro‘yxatdan o‘tish</h3>
+
+    {% for message in messages %}
+        <p class="error">{{ message }}</p>
+    {% endfor %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Foydalanuvchi nomi</label>
+        {{ form.username }}
+        {{ form.username.errors }}
+
+        <label>Parol</label>
+        {{ form.password1 }}
+        {{ form.password1.errors }}
+
+        <label>Parolni takrorlang</label>
+        {{ form.password2 }}
+        {{ form.password2.errors }}
+
+        <label>Foydalanuvchi turi</label>
+        <select name="role" id="role" required onchange="changeFields()">
+            <option value="">Tanlang</option>
+            <option value="student">O‘quvchi</option>
+            <option value="teacher">O‘qituvchi</option>
+        </select>
+
+        <div id="gradeBox" style="display:none">
+            <label>Sinf</label>
+            <select name="grade">
+                <option value="">Sinfni tanlang</option>
+                {% for number in "123456789" %}
+                    <option>{{ number }}-A</option>
+                    <option>{{ number }}-B</option>
+                    <option>{{ number }}-D</option>
+                {% endfor %}
+                <option>10-A</option><option>10-B</option><option>10-D</option>
+                <option>11-A</option><option>11-B</option><option>11-D</option>
+            </select>
+        </div>
+
+        <div id="subjectBox" style="display:none">
+            <label>O‘qitadigan faningiz</label>
+            <input type="text" name="subject" placeholder="Masalan: Matematika">
+        </div>
+
+        <button type="submit">Ro‘yxatdan o‘tish</button>
+    </form>
+
+    <p>Akkauntingiz bormi? <a href="{% url 'login' %}">Kirish</a></p>
+</div>
+
+<script>
+function changeFields() {
+    const role = document.getElementById("role").value;
+    document.getElementById("gradeBox").style.display =
+        role === "student" ? "block" : "none";
+    document.getElementById("subjectBox").style.display =
+        role === "teacher" ? "block" : "none";
+}
+</script>
+</body>
+</html>

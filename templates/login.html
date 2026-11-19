@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kirish | 65-Maktab</title>
+    <style>
+        body {
+            margin: 0; min-height: 100vh; display: grid;
+            place-items: center; background: #eef2ff;
+            font-family: Arial, sans-serif; padding: 20px;
+        }
+        .card {
+            background: white; width: 100%; max-width: 400px;
+            padding: 32px; border-radius: 18px;
+            box-shadow: 0 10px 35px #0001;
+        }
+        h2 { color: #253b80; text-align: center; }
+        input {
+            width: 100%; padding: 13px; margin: 9px 0;
+            box-sizing: border-box; border: 1px solid #ccd3e0;
+            border-radius: 9px;
+        }
+        button {
+            width: 100%; padding: 14px; margin-top: 15px;
+            background: #3158c9; color: white; border: 0;
+            border-radius: 9px; cursor: pointer;
+        }
+        a { color: #3158c9; text-decoration: none; }
+        .error { color: #c62828; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h2>65-Maktab</h2>
+    <h3>Tizimga kirish</h3>
+
+    {% if form.errors %}
+        <p class="error">Login yoki parol noto‘g‘ri.</p>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Parol" required>
+        <button type="submit">Kirish</button>
+    </form>
+
+    <p>Akkauntingiz yo‘qmi?
+        <a href="{% url 'register' %}">Ro‘yxatdan o‘tish</a>
+    </p>
+</div>
+</body>
+</html>
